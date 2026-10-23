@@ -8,7 +8,13 @@ afterEach(() => { jest.restoreAllMocks(); });
 
 it('validates the email and password before entering the demo', async () => {
   const onLogin = jest.fn();
-  const screen = render(<LoginScreen onBack={jest.fn()} onLogin={onLogin} />);
+  const screen = render(
+  <LoginScreen
+    onBack={jest.fn()}
+    onLogin={onLogin}
+    onCreateAccount={jest.fn()}
+  />
+);
 
   await act(async () => { fireEvent.press(screen.getByTestId('login-submit')); });
   expect(screen.getByText('Informe um e-mail válido.')).toBeTruthy();
@@ -18,7 +24,13 @@ it('validates the email and password before entering the demo', async () => {
 
 it('toggles password visibility and enters the demo with valid fields', async () => {
   const onLogin = jest.fn();
-  const screen = render(<LoginScreen onBack={jest.fn()} onLogin={onLogin} />);
+  const screen = render(
+  <LoginScreen
+    onBack={jest.fn()}
+    onLogin={onLogin}
+    onCreateAccount={jest.fn()}
+  />
+);
   fireEvent.changeText(screen.getByLabelText('E-mail'), 'pessoa@exemplo.com');
   fireEvent.changeText(screen.getByLabelText('Senha'), 'senha-de-teste');
 
@@ -34,7 +46,11 @@ it('toggles password visibility and enters the demo with valid fields', async ()
 
 it('explains that account creation and password recovery are unavailable', () => {
   const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
-  const screen = render(<LoginScreen onBack={jest.fn()} onLogin={jest.fn()} />);
+  const screen = render(<LoginScreen onBack={jest.fn()}
+    onLogin={onLogin}
+    onCreateAccount={jest.fn()}
+  />
+);
 
   fireEvent.press(screen.getByText('Esqueci minha senha'));
   fireEvent.press(screen.getByText('Criar uma conta'));
