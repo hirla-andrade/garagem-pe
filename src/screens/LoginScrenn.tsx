@@ -3,9 +3,9 @@ import { Alert, Keyboard, Pressable, StyleSheet, TextInput, View } from 'react-n
 import { BrandLogo, Button, Field, GarageArt, Icon, Notice, Row, Screen, Txt } from '../ui/components';
 import { colors } from '../ui/theme';
 
-type LoginScreenProps = { onBack: () => void; onLogin: () => void };
+type LoginScreenProps = { onBack: () => void; onLogin: () => void; onCreateAccount: () => void };
 
-export function LoginScreen({ onBack, onLogin }: LoginScreenProps) {
+export function LoginScreen({ onBack, onLogin, onCreateAccount }: LoginScreenProps) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,11 +22,7 @@ export function LoginScreen({ onBack, onLogin }: LoginScreenProps) {
 		onLogin();
 	}
 
-	function explainUnavailable(action: 'signup' | 'recovery') {
-		if (action === 'signup') {
-			Alert.alert('Cadastro indisponível', 'Este protótipo não cria contas nem coleta dados pessoais. Use o modo demonstração para conhecer o aplicativo.');
-			return;
-		}
+	function explainUnavailable() {
 		Alert.alert('Recuperação indisponível', 'Este protótipo não armazena senhas nem envia e-mails de recuperação.');
 	}
 
@@ -45,10 +41,10 @@ export function LoginScreen({ onBack, onLogin }: LoginScreenProps) {
 				</View>
 				{!!passwordError && <Txt variant="small" color={colors.danger}>{passwordError}</Txt>}
 			</View>
-			<Pressable accessibilityRole="button" onPress={() => explainUnavailable('recovery')} style={styles.textLink}><Txt variant="label" color={colors.primary}>Esqueci minha senha</Txt></Pressable>
+			<Pressable accessibilityRole="button" onPress={explainUnavailable} style={styles.textLink}><Txt variant="label" color={colors.primary}>Esqueci minha senha</Txt></Pressable>
 			<Button title="Entrar" icon="log-in" onPress={submit} testID="login-submit" />
 		</View>
-		<Row style={styles.signup}><Txt color={colors.muted}>Ainda não tem uma conta?</Txt><Pressable accessibilityRole="button" onPress={() => explainUnavailable('signup')}><Txt variant="label" color={colors.primary}>Criar uma conta</Txt></Pressable></Row>
+		<Row style={styles.signup}><Txt color={colors.muted}>Ainda não tem uma conta?</Txt><Pressable accessibilityRole="button" onPress={onCreateAccount}><Txt variant="label" color={colors.primary}>Criar uma conta</Txt></Pressable></Row>
 		<Notice>Modo demonstração ainda</Notice>
 	</Screen>;
 }
